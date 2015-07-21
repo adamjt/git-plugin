@@ -648,8 +648,10 @@ public class GitSCM extends SCM implements Serializable {
             listener.getLogger().println("[poll] Last Built Revision: " + buildData.lastBuild.revision);
         }
 
-        final String singleBranch = "master";
-        // final String singleBranch = getSingleBranch(lastBuild);
+        final String singleBranch = getSingleBranch(lastBuild);
+        if (!singleBranch.equals("master")) {
+                return PollingResult.NO_CHANGES;
+        }
 
         // fast remote polling needs a single branch and an existing last build
         if (this.remotePoll && singleBranch != null && buildData.lastBuild != null && buildData.lastBuild.getRevision() != null) {
